@@ -1,63 +1,64 @@
 <script>
+  import { push } from 'svelte-spa-router';
   import Nav from './Nav.svelte';
-  import axios from 'axios';
 
-  let file = null;
+  let file;
 
-  async function handleUpload() {
-    if (file) {
-      try {
-        const formData = new FormData();
-        formData.append('csvfile', file);
-
-        const response = await fetch('http://192.168.0.109:5000/upload', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (response.ok) {
-          const blob = await response.blob();
-          const downloadUrl = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = downloadUrl;
-          link.download = file.name;
-          link.click();
-          URL.revokeObjectURL(downloadUrl);
-        } else {
-          console.error('Error uploading file:', response.status);
-        }
-      } catch (error) {
-        console.error('Error uploading file:', error);
-      }
-
-      // Reset the file input
-      file = null;
+  async function handleSubmit() {
+    if (!file) {
+      console.error('No file selected');
+      return;
     }
+
+    const formData = new FormData();
+    formData.append('file', file);
+    console.log(formData);
+
+    try {
+      const response = await fetch('http://192.168.0.109:5000/upload', {
+        method: 'post',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        const error = await response.json();
+        console.error(error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    push('/home');
   }
 
-  function handleFileUpload(event) {
-    file = event.target.files[0];
+  function handleFileChange(event) {
+    const fileList = event.target.files;
+    if (fileList.length > 0) {
+      file = fileList[0];
+    } else {
+      file = null;
+    }
   }
 </script>
 
 <Nav />
-
-<div class="container">
-  <h1>Upload Page</h1>
-  <input type="file" class="upload-input" on:change={handleFileUpload} />
-  <button on:click={handleUpload}>Upload</button>
-</div>
+<main>
+  <h1>File Upload</h1>
+  <form on:submit|preventDefault={handleSubmit}>
+    <input
+      type="file"
+      accept=".csv, .xlsx, .xls"
+      on:change={handleFileChange}
+    />
+    <button type="submit">Upload</button>
+  </form>
+</main>
 
 <style>
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-
-  .upload-input {
-    margin-bottom: 16px;
+  main {
+    text-align: center;
+    padding: 2rem;
   }
 </style>
