@@ -14,7 +14,9 @@
   <div>
     <a href="#/home">Home</a>
     <a href="#/predict">Prediction</a>
+    <a href="#/upload">Upload</a>
   </div>
+
   {#if isLoggedIn}
     <button class="logout-button" on:click={handleLogout}>Logout</button>
   {:else}

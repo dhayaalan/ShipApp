@@ -3,6 +3,7 @@
   import Nav from './Nav.svelte';
   import { selectedCardone } from '../src/store';
   import { onMount } from 'svelte';
+  import Speedometer from 'svelte-speedometer';
 
   let data = [];
   let selectedCardData = null;
@@ -74,74 +75,19 @@
     </tbody>
   </table>
 {/if}
-<div class="credit">
-  <div class="gauge">
-    <div class="gauge__body">
-      <div class="gauge__fill" />
-      <div class="gauge__cover" />
-    </div>
-  </div>
-  <p>Prediction Score</p>
+
+<div class="meter">
+  <Speedometer
+    maxValue={100}
+    value={100}
+    needleColor="red"
+    startColor="red"
+    segments={10}
+    endColor="green"
+  />
 </div>
 
 <style>
-  .gauge {
-    width: 100%;
-    max-width: 250px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 32px;
-    color: #004033;
-  }
-
-  .gauge__body {
-    width: 100%;
-    height: 0;
-    padding-bottom: 50%;
-    background: #b4c0be;
-    position: relative;
-    border-top-left-radius: 100% 200%;
-    border-top-right-radius: 100% 200%;
-    overflow: hidden;
-  }
-
-  .gauge__fill {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: inherit;
-    height: 100%;
-    background: #5072fa;
-    transform-origin: center top;
-    transform: rotate(0.25turn);
-    transition: transform 0.2s ease-out;
-  }
-
-  .gauge__cover {
-    width: 75%;
-    height: 150%;
-    background: #ffffff;
-    border-radius: 50%;
-    position: absolute;
-    top: 25%;
-    left: 50%;
-    transform: translateX(-50%);
-
-    /* Text */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-bottom: 25%;
-    box-sizing: border-box;
-  }
-  .credit {
-    padding: 75px 450px;
-  }
-
-  p {
-    padding: 10px 70px;
-    font-weight: bold;
-  }
-
   table {
     /* border-collapse: collapse; */
     width: 100%;
@@ -163,5 +109,8 @@
 
   tr:hover {
     background-color: #5072fa;
+  }
+  .meter {
+    padding-left: 325px;
   }
 </style>
