@@ -11,21 +11,33 @@
   //     console.log('Password:', password);
   //   }
 
+  let name = '';
+  let pass = '';
+
   const fetch = async () => {
     const res = await axios({
       method: 'post',
-      url: 'http://192.168.0.109:5000/login',
+      url: 'http://192.168.0.192:5000/login',
       data: {
         username: username,
         password: password,
       },
     });
-    console.log(res.data);
+    console.log(res.data.password, 'result');
     // loginUsername.set(res.data.loginUsername);
+    name = res.data.username;
+    pass = res.data.password;
+
+    console.log(name, 'name', pass, 'password');
+    Handler(name,pass);
   };
 
-  function goto() {
-    push('/home');
+  function Handler(name, pass) {
+    if (username == name && password == pass) {
+      push('/home');
+    } else {
+      alert('username and password is incorrect');
+    }
   }
 </script>
 
@@ -45,7 +57,7 @@
     </div>
 
     <div class="form-group">
-      <button type="submit" on:click={goto}>Login</button>
+      <button type="submit">Login</button>
     </div>
   </form>
 </div>

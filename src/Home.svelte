@@ -25,7 +25,7 @@
 
   const fetch = async () => {
     try {
-      const res = await axios.get('http://192.168.0.109:5000/ship/list');
+      const res = await axios.get('http://192.168.0.192:5000/ship/list');
       console.log(res.data);
       ships = res.data.ships;
       console.log(ships, 'response');
@@ -36,12 +36,11 @@
 
   const card = async () => {
     try {
-      const result = await axios.get(
-        'http://192.168.0.109:5000/ships/details'
-      );
+      const result = await axios.get('http://192.168.0.192:5000/ships/details');
       cards = result.data.ships;
       console.log(cards, 'result');
       console.log(cards[0]['equipment_details'][0]);
+      // console.log(cards[0]['equipment_details'].equipment_name);
     } catch (error) {
       console.error(error);
     }
@@ -72,23 +71,52 @@
       </div>
     </div>
     <div class="row">
+      {#each cards as card}
+        {#if card.name === ship}
+          {#each card.equipment_details as equipment}
+            <div class="card-1 col-3" style="background-color: {getHealthColor(equipment.health)}">
+              <p>{equipment.equipment_name}</p>
+              <p>Health: {equipment.health}%</p>
+              <p>Last Updated: {equipment.last_updated}</p>
+              <button type="submit" on:click={() => goto(card.name, equipment.equipment_name)}>
+                View
+              </button>
+            </div>
+          {/each}
+        {/if}
+      {/each}
+    </div>
+  {/each}
+
+  {#if selectedCard}
+    <div class="card-details">
+      <h4>Selected Equipment: {selectedCard.equipment_name}</h4>
+      <p>Health: {selectedCard.health}</p>
+      <p>Last Updated: {selectedCard.last_updated}</p>
+      <p>Ship Name: {selectedCard.ship_name}</p>
+    </div>
+  {/if}
+</div>
+    <!-- <div class="row">
       {#each cards as card (card.name)}
         {#each card.equipment_details as equipment}
-          <div
-            class="card-1 col-3"
-            style="background-color: {getHealthColor(equipment.health)}"
-          >
-            <p>{equipment.equipment_name}</p>
-            <p>health: {equipment.health}%</p>
-            <p>last-updated: {equipment.last_updated}</p>
-            <button
-              type="submit"
-              on:click={() => goto(card.name, equipment.equipment_name)}
+           {#if card.name === equipment.equipmentName} -->
+            <!-- <div
+              class="card-1 col-3"
+              style="background-color: {getHealthColor(equipment.health)}"
             >
-              View
-            </button>
-          </div>
-        {/each}
+              <p>{equipment.equipment_name}</p>
+              <p>health: {equipment.health}%</p>
+              <p>last-updated: {equipment.last_updated}</p>
+              <button
+                type="submit"
+                on:click={() => goto(card.name, equipment.equipment_name)}
+              >
+                View
+              </button>
+            </div> -->
+          <!-- {/if} -->
+        <!-- {/each}
       {/each}
     </div>
     {#if selectedCard}
@@ -100,7 +128,7 @@
       </div>
     {/if}
   {/each}
-</div>
+</div> --> 
 
 <style>
   .card {

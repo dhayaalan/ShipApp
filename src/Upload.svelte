@@ -15,7 +15,7 @@
     console.log(formData);
 
     try {
-      const response = await fetch('http://192.168.0.109:5000/upload', {
+      const response = await fetch('http://192.168.0.192:5000/upload', {
         method: 'post',
         body: formData,
       });
