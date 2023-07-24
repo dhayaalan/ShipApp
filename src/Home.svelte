@@ -12,11 +12,12 @@
   async function goto(shipName, equipmentName) {
     try {
       const response = await axios.get(
-        `http://192.168.0.109:5000/ship/equipment/details/${shipName}/${equipmentName}`
+        `http://192.168.0.192:5000/ship/equipment/details/${shipName}/${equipmentName}`
       );
       selectedCard = response.data;
       console.log(selectedCard);
       selectedCardone.set(selectedCard);
+      localStorage.setItem('mydata', JSON.stringify(selectedCard));
       push('/predict');
     } catch (error) {
       console.error(error);
@@ -74,11 +75,17 @@
       {#each cards as card}
         {#if card.name === ship}
           {#each card.equipment_details as equipment}
-            <div class="card-1 col-3" style="background-color: {getHealthColor(equipment.health)}">
+            <div
+              class="card-1 col-3"
+              style="background-color: {getHealthColor(equipment.health)}"
+            >
               <p>{equipment.equipment_name}</p>
               <p>Health: {equipment.health}%</p>
               <p>Last Updated: {equipment.last_updated}</p>
-              <button type="submit" on:click={() => goto(card.name, equipment.equipment_name)}>
+              <button
+                type="submit"
+                on:click={() => goto(card.name, equipment.equipment_name)}
+              >
                 View
               </button>
             </div>
@@ -97,11 +104,12 @@
     </div>
   {/if}
 </div>
-    <!-- <div class="row">
+
+<!-- <div class="row">
       {#each cards as card (card.name)}
         {#each card.equipment_details as equipment}
            {#if card.name === equipment.equipmentName} -->
-            <!-- <div
+<!-- <div
               class="card-1 col-3"
               style="background-color: {getHealthColor(equipment.health)}"
             >
@@ -115,8 +123,8 @@
                 View
               </button>
             </div> -->
-          <!-- {/if} -->
-        <!-- {/each}
+<!-- {/if} -->
+<!-- {/each}
       {/each}
     </div>
     {#if selectedCard}
@@ -128,7 +136,7 @@
       </div>
     {/if}
   {/each}
-</div> --> 
+</div> -->
 
 <style>
   .card {

@@ -9,10 +9,12 @@
   let selectedCardData = null;
 
   onMount(() => {
-    selectedCardone.subscribe((value) => {
-      selectedCardData = value;
-      console.log(selectedCardData, 'erfghjk');
-    });
+    const savedData = localStorage.getItem('mydata');
+    if (savedData) {
+      selectedCardData = JSON.parse(savedData);
+      selectedCardone.set(selectedCardData);
+    }
+  
   });
 </script>
 
